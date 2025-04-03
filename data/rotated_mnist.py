@@ -126,3 +126,6 @@ def tasks_rotMNIST_custom_rotations(rotation_list, transform=[]):
 def generate_random_rotation_list(num_tasks, seed):
     np.random.seed(seed)
     return sorted(np.random.choice(range(360), size=num_tasks, replace=False).tolist())
+def generate_random_rotation_list_random_rank(num_tasks, seed):
+    np.random.seed(seed)
+    return np.random.choice(range(360), size=num_tasks, replace=False).tolist()

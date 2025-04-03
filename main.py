@@ -37,6 +37,10 @@ def handle_inputs():
                     help='Distance fixe entre les rotations des tâches (ex. 10, 45, 90...)')
     parser.add_argument('--random_seed', type=int, default=None,
                     help='Génère des rotations avec des distances aléatoires selon un seed donné.')
+    parser.add_argument('--random_rank', action='store_true',
+                    help="Utiliser un ordre aléatoire non trié des rotations (random rank)")
+
+
 
 
     # Parse, process and check chosen options
@@ -89,6 +93,7 @@ def run(args, verbose=False):
         normalize=checkattr(args, "normalize"), verbose=verbose, exception=(args.seed==0),
         singlehead=checkattr(args, 'singlehead'), train_set_per_class=checkattr(args, 'gen_classifier'),
         random_seed=args.random_seed,
+        random_rank=args.random_rank
     )
     # The experiments in this script follow the academic continual learning setting,
     # the above lines of code therefore load both the 'context set' and the 'data stream'

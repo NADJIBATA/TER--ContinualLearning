@@ -4,7 +4,7 @@ from torchvision import transforms
 from torch.utils.data import ConcatDataset
 from data.manipulate import permutate_image_pixels, SubDataset, TransformedDataset
 from data.available import AVAILABLE_DATASETS, AVAILABLE_TRANSFORMS, DATASET_CONFIGS
-from data.rotated_mnist import tasks_rotMNIST_datasets, tasks_rotMNIST_custom_rotations, generate_random_rotation_list
+from data.rotated_mnist import tasks_rotMNIST_datasets, tasks_rotMNIST_custom_rotations, generate_random_rotation_list , generate_random_rotation_list_random_rank
 
 def get_dataset(name, type='train', download=True, capacity=None, permutation=None, dir='./store/datasets',
                 verbose=False, augment=False, normalize=False, target_transform=None):
@@ -42,7 +42,7 @@ def get_singlecontext_datasets(name, data_dir="./store/datasets", normalize=Fals
 
     return (trainset, testset), config
 
-def get_context_set(name, scenario, contexts, random_seed=None, distance=None, data_dir="./datasets", only_config=False,
+def get_context_set(name, scenario, contexts, random_seed=None ,random_rank=None, distance=None, data_dir="./datasets", only_config=False,
                     verbose=False, exception=False, normalize=False, augment=False, singlehead=False, train_set_per_class=False):
 
     if name == "splitMNIST":
@@ -100,7 +100,12 @@ def get_context_set(name, scenario, contexts, random_seed=None, distance=None, d
             ))
 
     elif name == "RotatedMNIST":
-        if random_seed is not None:
+        if random_rank :
+            rotations = generate_random_rotation_list_random_rank(contexts, seed=random_seed)
+            print("\n[INFO] Rotations aléatoires générées:", rotations)
+            train_datasets, test_datasets = tasks_rotMNIST_custom_rotations(rotations)
+
+        elif random_seed is not None:
             rotations = generate_random_rotation_list(contexts, seed=random_seed)
             print("\n[INFO] Rotations aléatoires générées:", rotations)
             train_datasets, test_datasets = tasks_rotMNIST_custom_rotations(rotations)
